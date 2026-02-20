@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engelsiz Kayıt Formu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* KVKK Onay Ekranı */
+        .kvkk-container {
+            padding: 40px;
+            background: white;
+        }
+
+        .kvkk-title {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .kvkk-text {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.8;
+            color: #555;
+            border: 2px solid #e9ecef;
+        }
+
+        .kvkk-text h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .kvkk-text p {
+            margin-bottom: 12px;
+        }
+
+        .kvkk-text ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .kvkk-text li {
+            margin-bottom: 8px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-container label {
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            user-select: none;
+        }
+
+        .checkbox-container label strong {
+            color: #d9534f;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .continue-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .continue-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Form Container (Gizli başlangıçta) */
+        .form-container {
+            padding: 40px;
+            background: white;
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        iframe {
+            width: 100%;
+            min-height: 2800px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .kvkk-container,
+            .form-container {
+                padding: 20px;
+            }
+
+            .kvkk-text {
+                max-height: 300px;
+                padding: 15px;
+            }
+
+            iframe {
+                min-height: 3000px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="logo.jpeg" alt="Logo" class="logo">
+                <h1>Engelsiz Kayıt Formu</h1>
+                <p class="subtitle">Lütfen bilgilerinizi eksiksiz doldurunuz</p>
+            </div>
+        </header>
+
+        <!-- KVKK Onay Ekranı -->
+        <div class="kvkk-container" id="kvkkScreen">
+            <h2 class="kvkk-title">Gizlilik ve Kişisel Verilerin Korunması</h2>
+            
+            <div class="kvkk-text">
+                <h3>KVKK Aydınlatma Metni</h3>
+                <p>
+                    <strong>6698 sayılı Kişisel Verilerin Korunması Kanunu</strong> uyarınca, kişisel verilerinizin işlenmesi ile ilgili aşağıdaki bilgilendirmeyi dikkatinize sunarız:
+                </p>
+
+                <h3>1. Veri Sorumlusu</h3>
+                <p>
+                    Kişisel verileriniz, veri sorumlusu sıfatıyla tarafımızca işlenmektedir.
+                </p>
+
+                <h3>2. İşlenen Kişisel Veriler</h3>
+                <p>
+                    Form aracılığıyla toplanan kişisel verileriniz şunlardır:
+                </p>
+                <ul>
+                    <li>Kimlik bilgileri (TC Kimlik No, Ad Soyad, Doğum Tarihi, Cinsiyet)</li>
+                    <li>İletişim bilgileri (Telefon, Adres)</li>
+                    <li>Aile bilgileri (Anne Adı, Baba Adı)</li>
+                    <li>Eğitim bilgileri (Öğrenim Durumu)</li>
+                    <li>Sağlık bilgileri (Engel Türü, Engel Oranı, Engel Oluşum Zamanı)</li>
+                    <li>Diğer bilgiler (Çalışma Durumu, Açıklama/Not)</li>
+                </ul>
+
+                <h3>3. Kişisel Verilerin İşlenme Amacı</h3>
+                <p>
+                    Kişisel verileriniz, engelsiz bireylerin kayıt altına alınması, hizmet planlaması ve yönetimi amacıyla işlenmektedir.
+                </p>
+
+                <h3>4. Kişisel Verilerin İşlenme Hukuki Sebebi</h3>
+                <p>
+                    Kişisel verileriniz, KVKK'nın 5. maddesinin 2. fıkrasının (c) bendi uyarınca "Veri sorumlusunun hukuki yükümlülüğünü yerine getirmesi" ve (e) bendi uyarınca "İlgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla, veri sorumlusunun meşru menfaatleri için veri işlemenin zorunlu olması" hukuki sebeplerine dayanılarak işlenmektedir.
+                </p>
+
+                <h3>5. Kişisel Verilerin Aktarılması</h3>
+                <p>
+                    Kişisel verileriniz, yalnızca yasal yükümlülüklerin yerine getirilmesi ve hizmet sunumu amacıyla, güvenli bir şekilde saklanmakta ve üçüncü kişilerle paylaşılmamaktadır.
+                </p>
+
+                <h3>6. Kişisel Verilerin Saklanma Süresi</h3>
+                <p>
+                    Kişisel verileriniz, işleme amacının gerektirdiği süre boyunca ve yasal saklama sürelerine uygun olarak saklanmaktadır.
+                </p>
+
+                <h3>7. Haklarınız</h3>
+                <p>
+                    KVKK'nın 11. maddesi uyarınca, kişisel verilerinizle ilgili olarak:
+                </p>
+                <ul>
+                    <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
+                    <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
+                    <li>İşlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+                    <li>Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,</li>
+                    <li>Eksik veya yanlış işlenmişse düzeltilmesini isteme,</li>
+                    <li>KVKK'da öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme,</li>
+                    <li>Düzeltme, silme ve yok etme işlemlerinin, kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
+                    <li>İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,</li>
+                    <li>Kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme haklarına sahipsiniz.</li>
+                </ul>
+
+                <h3>8. İletişim</h3>
+                <p>
+                    Yukarıda belirtilen haklarınızı kullanmak için veri sorumlusuna başvurabilirsiniz.
+                </p>
+            </div>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="kvkkOnay" required>
+                <label for="kvkkOnay">
+                    <strong>KVKK Aydınlatma Metni'ni okudum, anladım ve kişisel verilerimin yukarıda belirtilen amaçlarla işlenmesine onay veriyorum.</strong> 
+                    Bu onay, formu doldurup göndermek için zorunludur.
+                </label>
+            </div>
+
+            <button class="continue-btn" id="continueBtn" disabled>
+                Forma Devam Et
+            </button>
+        </div>
+
+        <!-- Form Container (Başlangıçta gizli) -->
+        <div class="form-container" id="formScreen">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSffYLdYP834ZDmkd_x0bDs3AIDc8yhIn3-6caVeuHeBApeQSw/viewform?embedded=true" width="640" height="2800" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe>
+        </div>
+    </div>
+
+    <script>
+        const kvkkCheckbox = document.getElementById('kvkkOnay');
+        const continueBtn = document.getElementById('continueBtn');
+        const kvkkScreen = document.getElementById('kvkkScreen');
+        const formScreen = document.getElementById('formScreen');
+
+        // Checkbox değiştiğinde butonu aktif/pasif yap
+        kvkkCheckbox.addEventListener('change', function() {
+            continueBtn.disabled = !this.checked;
+        });
+
+        // Devam butonuna tıklandığında
+        continueBtn.addEventListener('click', function() {
+            if (kvkkCheckbox.checked) {
+                // KVKK ekranını gizle
+                kvkkScreen.style.display = 'none';
+                // Form ekranını göster
+                formScreen.classList.add('active');
+                // Sayfayı forma kaydır
+                formScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+</body>
+</html>
